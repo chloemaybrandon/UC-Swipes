@@ -1,9 +1,12 @@
 //import logo from './logo.svg';
-import {Link, Route, Routes } from 'react-router-dom';
+import {Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './Pages/Login'
 import SearchListings from './Pages/SearchListings'
 import CreateAccount from './Pages/CreateAccount'
+import { Navbar } from './Components/navbar';
+import PersonalListings from './Pages/PersonalListings';
+import EditProfile from './Pages/EditProfile';
 
 function App() {
   return (
@@ -23,24 +26,37 @@ function App() {
         </a>
       </header> */}
 
-      <ul>
-        {/* note: Link underlying type is anchor */}
-        <li><Link to='/search-listings'>Login (to SearchListings)</Link></li>
-        <li><Link to='/create-account'>Create account</Link></li>
-      </ul>
-
-      {/* successfully logging in will take you to search page */}
-      <button><Link to='/search-listings'>Login</Link></button>
+      {/* <Navbar /> */}
+      {/* <Login /> */}
       <Routes>
         <Route path='/' element={<Login />}/>
-        <Route path='/search-listings' element={<SearchListings />}/>
-        <Route path='/create-account' element={<CreateAccount />}/>
+        <Route path='/search-listings' element={
+        <>
+          <Navbar />
+          <SearchListings />
+          </>
+        }/>
+        <Route path='/personal-listings' element={
+        <>
+          <Navbar />
+          <PersonalListings />
+          </>
+        }/>
+        <Route path='/create-account' element={
+        <>
+          <CreateAccount />
+          </>
+        }/>
+        <Route path='/my-profile' element={
+        <>
+          <Navbar />
+          <EditProfile />
+          </>
+        }/>
         <Route />
       </Routes>
 
-      
-      {/* <Login/> */}
-    </div>
+          </div>
   );
 }
 
