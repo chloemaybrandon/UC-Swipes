@@ -1,35 +1,35 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const AccountSchema = new Schema({
     username: {
         type: String,
-        required: true
+        required: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     name: {
         type: String,
-        required: true
+        required: true,
     },
     email: {
         type: String,
-        required: true
+        required: true,
     },
     phonenum: {
         type: Number,
-        required: true
+        required: true,
     },
     image: {},
     rating: {
         type: Number,
-        default: 0
+        default: null,
     },
     joindate: {
-        type: String
-    }
+        type: Date,
+    },
 });
 
 const Account = mongoose.model("Account", AccountSchema);
