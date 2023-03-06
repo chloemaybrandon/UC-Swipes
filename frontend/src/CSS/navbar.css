@@ -2,7 +2,7 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    background-color: skyblue;
+    background-color: lightskyblue;
   }
 
   li {
@@ -21,8 +21,8 @@ ul {
     padding: 0;
     background-color: lightskyblue;
     padding: 25px;
-    border: none;
     color: navy;
+    border: none;
   }
 
   .nav-button:hover{

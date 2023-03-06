@@ -1,6 +1,7 @@
 //login will need to route to main page OR create account page
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
+import '../CSS/Login.css';
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -14,48 +15,51 @@ export default function Login() {
 
     return (
         <div>
+            <div className="loginContainer">
+            <h2>Log In</h2>
             <p>
                 This is the login page. This should be the first page displayed
                 when loading the site.
             </p>
-
-            <h2>Log In</h2>
             <form>
-                <label htmlFor="name">Full name</label>
+                <label htmlFor="name">Full name </label>
                 <input
                     value={name}
                     name="name"
                     onChange={(e) => setName(e.target.value)}
                     id="name"
-                    placeholder="full Name"
+                    placeholder="John Smith"
                 />
-                <label htmlFor="email">email</label>
+                <br />
+                <label htmlFor="email">Email </label>
                 <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     type="email"
-                    placeholder="youremail@gmail.com"
+                    placeholder="youremail@g.ucla.edu"
                     id="email"
                     name="email"
                 />
-                <label htmlFor="password">password</label>
+                <br />
+                <label htmlFor="password">Password </label>
                 <input
                     value={pass}
                     onChange={(e) => setPass(e.target.value)}
                     type="password"
-                    placeholder="********"
+                    placeholder="***************"
                     id="password"
                     name="password"
                 />
+                <br />
                 <button onClick={handleSubmit}>
                     <Link to="/search-listings">Login</Link>
                 </button>
             </form>
             {/* successfully logging in will take you to search page */}
-            <br />
             <button>
                 <Link to="/create-account">Create an Account</Link>
             </button>
+            </div>
         </div>
     );
 }
