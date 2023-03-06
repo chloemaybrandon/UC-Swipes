@@ -17,7 +17,7 @@ export default function CreateAccount() {
         <div>
             <h2>Create an Account</h2>
             <form>
-                <label htmlFor="name">Full Name</label>
+                <label htmlFor="name">Full Name </label>
                 <input
                     value={name}
                     name="name"
@@ -25,23 +25,26 @@ export default function CreateAccount() {
                     id="name"
                     placeholder="full Name"
                 />
-                <label htmlFor="email">email</label>
+                <br />
+                <label htmlFor="Email ">Email </label>
                 <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     type="email"
-                    placeholder="youremail@gmail.com"
+                    placeholder="youremail@g.ucla.edu"
                     id="email"
                     name="email"
                 />
-                <label htmlFor="phoneNumber">Phone Number</label>
+                <br />
+                <label htmlFor="phoneNumber">Phone Number </label>
                 <input
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     id="phoneNumber"
                     name="phoneNumber"
                 />
-                <label htmlFor="password">password</label>
+                <br />
+                <label htmlFor="password">Password </label>
                 <input
                     value={password}
                     onChange={(e) => setPass(e.target.value)}
@@ -50,8 +53,9 @@ export default function CreateAccount() {
                     id="password"
                     name="password"
                 />
+                <br />
                 <button onClick={handleSubmit}>
-                    <Link to="/">Create an Account</Link>
+                    <Link to="/">Create Account</Link>
                 </button>
             </form>
             <button>
