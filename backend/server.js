@@ -1,18 +1,28 @@
-const mongoose = require('mongoose');
-connection = "mongodb+srv://admin:yAf0EYMaHl5ZYPRh@cluster0.agavz7f.mongodb.net/?retryWrites=true&w=majority";
+const express = require("express");
+const mongoose = require("mongoose");
+const routes = require("./routes"); // new
 
-mongoose.set('strictQuery', false);
+connection =
+    "mongodb+srv://admin:yAf0EYMaHl5ZYPRh@cluster0.agavz7f.mongodb.net/?retryWrites=true&w=majority";
+
+mongoose.set("strictQuery", false);
 
 mongoose
-    .connect(connection,
-        {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        }    
-    )
-    .then(() => console.log("Connected to DB"))
-    .catch(console.error);
+    .connect(connection, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        const app = express();
+        app.use(express.json());
+        app.use("/api", routes);
 
+        console.log("Connected to DB");
+
+        app.listen(3000, () => {
+            console.log("Server has started!");
+        });
+    });
 
 // const Account = require("./models/account");
 //
