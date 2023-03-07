@@ -7,6 +7,7 @@ import CreateAccount from './Pages/CreateAccount'
 import { Navbar } from './Components/navbar';
 import PersonalListings from './Pages/PersonalListings';
 import EditProfile from './Pages/EditProfile';
+import CreatePost from "./Pages/CreatePost";
 
 function App() {
   return (
@@ -26,6 +27,12 @@ function App() {
         <>
           <Navbar />
           <PersonalListings />
+          </>
+        }/>
+        <Route path='/create-post' element={
+        <>
+          <Navbar />
+          <CreatePost />
           </>
         }/>
         <Route path='/create-account' element={
