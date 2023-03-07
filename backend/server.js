@@ -1,41 +1,53 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const routes = require("./routes"); // new
-
 connection =
     "mongodb+srv://admin:yAf0EYMaHl5ZYPRh@cluster0.agavz7f.mongodb.net/?retryWrites=true&w=majority";
-
 mongoose.set("strictQuery", false);
 
 mongoose
-    .connect(connection, {
+.connect(connection,
+    {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-    })
-    .then(() => {
-        const app = express();
-        app.use(express.json());
-        app.use("/api", routes);
+    }
+)
+.then(() => console.log("Conected to DB"))
+.catch(console.error)
 
-        console.log("Connected to DB");
+const Account = require("./models/account");
 
-        app.listen(3000, () => {
-            console.log("Server has started!");
-        });
-    });
+app = express();
+app.use(express.json());
 
-// const Account = require("./models/account");
-//
+app.listen(3000, () => console.log("Server listening on port 3000"))
+
+
+//App Endpoints
+
+app.get('/accounts', async (req, res) => {
+    const accounts = await Account.find();
+
+    res.json(accounts);
+})
+
+app.get("/random", (request, response) => {
+    // generate random number from 1-100
+    const rand = Math.floor(Math.random() * 100) + 1;
+
+    // send random number in response
+    response.send(`${rand}`);
+})
+
 // const newAccount = new Account({
-//     username: "test1",
-//     password: "12345678",
-//     name: "TEST1",
-//     email: "TEST1@gmail.com",
-//     phonenum: 1234567891,
-//     // image: {},
+//     username: "Chloe",
+//     password: "333",
+//     name: "TESTCHLOE",
+//     email: "CHLOE@gmail.com",
+//     phonenum: 333333,
+//     rating: 5,
 //     joindate: Date(Date.now())
 // });
 // newAccount.save();
 
-// Account.find({})
-//     .then(Account => console.log(Account));
+Account.find({})
+    .then(Account => console.log(Account));
