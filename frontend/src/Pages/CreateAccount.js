@@ -1,5 +1,5 @@
 //route back to login page after successfully creating account
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
