@@ -18,7 +18,7 @@ mongoose
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
-    .then(() => console.log("Conected to DB"))
+    .then(() => console.log("Connected to DB"))
     .catch(console.error);
 
 app.listen(port, () => console.log("Server listening on port " + port));
@@ -28,6 +28,61 @@ app.listen(port, () => console.log("Server listening on port " + port));
 app.get("/accounts", async (req, res) => {
     const accounts = await Account.find();
     res.json(accounts);
+});
+
+app.get("/accounts/:id", async (req, res) => {
+    try {
+        const account = await Account.findOne({ _id: req.params.id });
+        res.send(account);
+    } catch {
+        res.status(404);
+        res.send({ error: "Account doesn't exist!" });
+    }
+});
+
+app.patch("/accounts/:id", async (req, res) => {
+    try {
+        const account = await Account.findOne({ _id: req.params.id });
+
+        if (req.body.username != account.username) {
+            account.username = req.body.username;
+        }
+
+        if (
+            req.body.password != account.password &&
+            !req.body.password.includes("*")
+        ) {
+            account.password = req.body.password;
+        }
+
+        if (req.body.name != account.name) {
+            account.name = req.body.name;
+        }
+
+        if (req.body.email != account.email) {
+            account.email = req.body.email;
+        }
+
+        if (req.body.phoneNumber != account.phoneNumber) {
+            account.phoneNumber = req.body.phoneNumber;
+        }
+
+        if (req.body.image) {
+            account.image = req.body.image;
+        }
+
+        if (req.body.rating) {
+            account.rating = req.body.rating;
+        }
+
+        // joindate should not be modified
+
+        await account.save();
+        res.send(account);
+    } catch {
+        res.status(404);
+        res.send({ error: "Account doesn't exist!" });
+    }
 });
 
 app.post("/accounts", async (req, res) => {
