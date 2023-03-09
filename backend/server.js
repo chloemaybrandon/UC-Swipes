@@ -1,5 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors")
+const Account = require("./models/account");
+const Listing = require("./models/listing");
+
+app = express();
+app.use(express.json());
+app.use(cors());
+
 connection =
     "mongodb+srv://admin:yAf0EYMaHl5ZYPRh@cluster0.agavz7f.mongodb.net/?retryWrites=true&w=majority";
 mongoose.set("strictQuery", false);
@@ -14,12 +22,7 @@ mongoose
 .then(() => console.log("Conected to DB"))
 .catch(console.error)
 
-const Account = require("./models/account");
-
-app = express();
-app.use(express.json());
-
-app.listen(3000, () => console.log("Server listening on port 3000"))
+app.listen(8080, () => console.log("Server listening on port 8080"))
 
 
 //App Endpoints
@@ -28,6 +31,12 @@ app.get('/accounts', async (req, res) => {
     const accounts = await Account.find();
 
     res.json(accounts);
+})
+
+app.get('/listings', async (req, res) => {
+    const listings = await Listing.find();
+
+    res.json(listings);
 })
 
 app.get("/random", (request, response) => {

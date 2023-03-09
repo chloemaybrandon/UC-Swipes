@@ -9,6 +9,7 @@ import PersonalListings from './Pages/PersonalListings';
 import EditProfile from './Pages/EditProfile';
 
 function App() {
+
   return (
     <div className="App">
 
@@ -41,8 +42,7 @@ function App() {
         }/>
         <Route />
       </Routes>
-
-          </div>
+    </div>
   );
 }
 
