@@ -18,7 +18,7 @@ const AccountSchema = new Schema({
         type: String,
         required: true,
     },
-    phonenum: {
+    phoneNumber: {
         type: Number,
         required: true,
     },

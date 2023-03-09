@@ -26,7 +26,7 @@ router.post("/accounts", async (req, res) => {
         password: req.body.password,
         name: req.body.name,
         email: req.body.email,
-        phonenum: req.body.phonenum,
+        phoneNumber: req.body.phoneNumber,
         image: {},
         // rating: null,
         joindate: Date.now(),
@@ -57,8 +57,8 @@ router.patch("/accounts/:id", async (req, res) => {
             account.email = req.body.email;
         }
 
-        if (req.body.phonenum) {
-            account.phonenum = req.body.phonenum;
+        if (req.body.phoneNumber) {
+            account.phoneNumber = req.body.phoneNumber;
         }
 
         if (req.body.image) {
