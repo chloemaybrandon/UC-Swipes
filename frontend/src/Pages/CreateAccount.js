@@ -1,16 +1,42 @@
 //route back to login page after successfully creating account
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function CreateAccount() {
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [password, setPass] = useState("");
+    const [password, setPassword] = useState("");
     const [name, setName] = useState("");
+
+    const URL = "http://localhost:8080";
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Created an account");
+        createAccount(username, password, name, email, phoneNumber);
+    };
+
+    const createAccount = (username, password, name, email, phoneNumber) => {
+        axios
+            .post(URL + "/accounts", {
+                username: username,
+                password: password,
+                name: name,
+                email: email,
+                phoneNumber: phoneNumber,
+            })
+            .then((res) => {
+                alert("Account created with email " + email);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        setUsername("");
+        setPassword("");
+        setName("");
+        setEmail("");
+        setPhoneNumber("");
     };
 
     return (
@@ -24,6 +50,15 @@ export default function CreateAccount() {
                     onChange={(e) => setName(e.target.value)}
                     id="name"
                     placeholder="full Name"
+                />
+                <br />
+                <label htmlFor="username">Username </label>
+                <input
+                    value={username}
+                    name="username"
+                    onChange={(e) => setUsername(e.target.value)}
+                    id="username"
+                    placeholder="Username"
                 />
                 <br />
                 <label htmlFor="Email ">Email </label>
@@ -47,7 +82,7 @@ export default function CreateAccount() {
                 <label htmlFor="password">Password </label>
                 <input
                     value={password}
-                    onChange={(e) => setPass(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     placeholder="********"
                     id="password"
