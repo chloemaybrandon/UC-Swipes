@@ -39,6 +39,18 @@ app.get('/listings', async (req, res) => {
     res.json(listings);
 })
 
+app.post('/listings', async (req, res) => {
+    const listing = new Listing({
+        poster_name: req.body.poster_name,
+        price: req.body.price,
+        location: req.body.location,
+        date: Date.now()
+    })
+
+    listing.save();
+    res.json(listing);
+})
+
 app.get("/random", (request, response) => {
     // generate random number from 1-100
     const rand = Math.floor(Math.random() * 100) + 1;
