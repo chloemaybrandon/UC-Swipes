@@ -1,4 +1,5 @@
 import { Listing } from "../Components/listing"
+import '../CSS/SearchListings.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 
@@ -35,17 +36,18 @@ export default function SearchListings(){
         <div>
             <p>This is the SearchListings page. This can be navigated to from the navbar and is the first thing that should appear after logging in.</p>
             
-            <div>
+            <div className="axios_lisitng_container">
             {listings.map(listing =>
-                    <div>
-                        <h3>{listing.poster_name}</h3>
-                        <h3>{listing.location}</h3>
+                    <div className="axios_lisitng">
+                        <h3>Seller: {listing.poster_name}</h3>
+                        <p>Where to meet: {listing.location}</p>
+                        <p>Price: ${listing.price}</p>
                     </div>
                 )}
             </div>
+            {/* <Listing />
             <Listing />
-            <Listing />
-            <Listing />
+            <Listing /> */}
         </div>
     )
 }

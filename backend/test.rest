@@ -8,9 +8,9 @@ Host: localhost:8080
 Content-Type: application/json
 
 {
-    "poster_name": "Gene Block",
-    "price": 100,
-    "location": "Epicuria"
+    "poster_name": "Kenan",
+    "price": 0.50,
+    "location": "Rende West"
 }
 
 ###
