@@ -22,7 +22,6 @@ const AccountSchema = new Schema({
         type: Number,
         required: true,
     },
-    image: {},
     rating: {
         type: Number,
         default: null,

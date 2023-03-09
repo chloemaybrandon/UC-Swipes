@@ -10,6 +10,7 @@ import EditProfile from './Pages/EditProfile';
 import CreatePost from "./Pages/CreatePost";
 
 function App() {
+
   return (
     <div className="App">
 
@@ -48,8 +49,7 @@ function App() {
         }/>
         <Route />
       </Routes>
-
-          </div>
+    </div>
   );
 }
 

@@ -2,7 +2,7 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    background-color: lightskyblue;
+    background-color: #FFDD99;
   }
 
   li {
@@ -19,7 +19,7 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    background-color: lightskyblue;
+    background-color: #FFDD99;
     padding: 25px;
     color: navy;
     border: none;
