@@ -1,6 +1,6 @@
 //route back to login page after successfully creating account
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function CreateAccount() {
@@ -11,6 +11,7 @@ export default function CreateAccount() {
     const [name, setName] = useState("");
 
     const URL = "http://localhost:8080";
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,7 +20,7 @@ export default function CreateAccount() {
 
     const createAccount = (username, password, name, email, phoneNumber) => {
         axios
-            .post(URL + "/accounts", {
+            .post(URL + "/register", {
                 username: username,
                 password: password,
                 name: name,
@@ -27,10 +28,12 @@ export default function CreateAccount() {
                 phoneNumber: phoneNumber,
             })
             .then((res) => {
+                navigate("/");
                 alert("Account created with email " + email);
             })
             .catch((err) => {
                 console.log(err);
+                alert("Account failed to create");
             });
         setUsername("");
         setPassword("");
@@ -89,9 +92,7 @@ export default function CreateAccount() {
                     name="password"
                 />
                 <br />
-                <button onClick={handleSubmit}>
-                    <Link to="/">Create Account</Link>
-                </button>
+                <button onClick={handleSubmit}>CreateAccount</button>
             </form>
             <button>
                 <Link to="/">Already have an account? Login here.</Link>

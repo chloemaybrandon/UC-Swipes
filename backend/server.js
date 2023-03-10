@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const Account = require("./models/account");
 const Listing = require("./models/listing");
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = "randomNumbersAndLetters123456789";
 
 app = express();
 app.use(express.json());
@@ -25,11 +27,13 @@ app.listen(port, () => console.log("Server listening on port " + port));
 
 //App Endpoints
 
+// get all accounts
 app.get("/accounts", async (req, res) => {
     const accounts = await Account.find();
     res.json(accounts);
 });
 
+// get a specific account
 app.get("/accounts/:id", async (req, res) => {
     try {
         const account = await Account.findOne({ _id: req.params.id });
@@ -40,6 +44,7 @@ app.get("/accounts/:id", async (req, res) => {
     }
 });
 
+// update an account
 app.patch("/accounts/:id", async (req, res) => {
     try {
         const account = await Account.findOne({ _id: req.params.id });
@@ -85,20 +90,95 @@ app.patch("/accounts/:id", async (req, res) => {
     }
 });
 
-app.post("/accounts", async (req, res) => {
-    const account = new Account({
-        username: req.body.username,
-        password: req.body.password,
-        name: req.body.name,
-        email: req.body.email,
-        phoneNumber: req.body.phoneNumber,
-        image: {},
-        // rating: null,
-        joindate: Date.now(),
-    });
+// create a new account
+app.post("/register", async (req, res) => {
+    const { username, password, name, email, phoneNumber } = req.body;
+    try {
+        // throw an error if there already exists an account with the username provided
+        const existingAccount = await Account.findOne({ username });
+        if (existingAccount) {
+            return res
+                .status(400)
+                .send({ error: "Username is already in use" });
+        }
 
-    account.save();
-    res.json(account);
+        await Account.create({
+            username,
+            password,
+            name,
+            email,
+            phoneNumber,
+            image: {},
+            joindate: Date.now(),
+        });
+        res.status(200);
+        res.send({ status: "ok" });
+    } catch (error) {
+        res.status(404);
+        res.send({ status: "error" });
+    }
+});
+
+// log into an existing account
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    const user = await Account.findOne({ username });
+
+    // if there is no account with the provided username, throw an error
+    if (!user) {
+        return res.status(400).json({ error: "User not found" });
+    }
+
+    // if the password is correct
+    if (password == user.password) {
+        // generate a token using the user's username
+        const token = jwt.sign({ username: user.username }, JWT_SECRET, {
+            expiresIn: 86400, // token expires after 24 hours
+        });
+
+        if (res.status(201)) {
+            return res.json({ status: "OK", data: token });
+        } else {
+            return res.json({ error: "error" });
+        }
+    }
+
+    return res
+        .status(400)
+        .json({ status: "error", error: "Password incorrect" });
+});
+
+// get the account information
+app.post("/accountData", async (req, res) => {
+    const { token } = req.body;
+
+    try {
+        // decode the token created when a user logged in
+        const user = jwt.verify(token, JWT_SECRET, (err, res) => {
+            // set user to "token expired" if the token has expired
+            if (err) {
+                return "token expired";
+            }
+            return res;
+        });
+
+        // if the user has expired, send an error
+        if (user === "token expired") {
+            return res.send({ status: "error", data: "token expired" });
+        }
+
+        // look for user data when provided with a username
+        const username = user.username;
+        Account.findOne({ username: username })
+            .then((data) => {
+                res.json({ status: "OK", data: data });
+            })
+            .catch((error) => {
+                res.send({ status: "error", data: error });
+            });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 app.get("/listings", async (req, res) => {
