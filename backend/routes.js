@@ -36,6 +36,33 @@ router.post("/accounts", async (req, res) => {
     res.send(post);
 });
 
+// Log into an account
+router.post("/login", async (req, res) => {
+    try {
+        const account = await Account.findOne({ _id: req.params.id });
+        res.send(account);
+    } catch {
+        res.status(404);
+        res.send({ error: "Account doesn't exist!" });
+    }
+
+
+    const post = new Account({
+        username: req.body.username,
+        password: req.body.password,
+        name: req.body.name,
+        email: req.body.email,
+        phoneNumber: req.body.phoneNumber,
+        image: {},
+        // rating: null,
+        joindate: Date.now(),
+    });
+
+    await post.save();
+    res.send(post);
+});
+
+
 // Update an account
 router.patch("/accounts/:id", async (req, res) => {
     try {

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function EditProfile() {
+    const [id, setId] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -9,7 +11,7 @@ export default function EditProfile() {
     const [name, setName] = useState("");
 
     const URL = "http://localhost:8080";
-    const accountId = "63f94921f9ab2eb4c60c2bae"; // id to get information of current account
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -19,20 +21,33 @@ export default function EditProfile() {
     const getCurrentAccount = () => {
         // get the information of the current account to fill in fields
         axios
-            .get(URL + "/accounts/" + accountId)
-            .then((res) => {
-                setUsername(res.data.username);
-                setPassword("********");
-                setName(res.data.name);
-                setEmail(res.data.email);
-                setPhoneNumber(res.data.phoneNumber);
+            .post(URL + "/accountData", {
+                token: window.localStorage.getItem("token"),
             })
-            .catch(console.error);
+            .then((res) => {
+                // log out if token expired
+                if (res.data.data === "token expired") {
+                    alert("Token expired. Please log in again");
+                    window.localStorage.clear();
+                    window.location.reload(true);
+                    navigate("/");
+                }
+
+                setId(res.data.data._id);
+                setUsername(res.data.data.username);
+                setPassword("********");
+                setName(res.data.data.name);
+                setEmail(res.data.data.email);
+                setPhoneNumber(res.data.data.phoneNumber);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     const editAccount = (username, password, name, email, phoneNumber) => {
         axios
-            .patch(URL + "/accounts/" + accountId, {
+            .patch(URL + "/accounts/" + id, {
                 username: username,
                 password: password,
                 name: name,
@@ -49,7 +64,7 @@ export default function EditProfile() {
 
     useEffect(() => {
         getCurrentAccount();
-    }, []);
+    });
 
     return (
         <div>
