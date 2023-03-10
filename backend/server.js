@@ -131,6 +131,7 @@ app.post("/login", async (req, res) => {
 
     // if the password is correct
     if (password == user.password) {
+        // generate a token using the user's username
         const token = jwt.sign({ username: user.username }, JWT_SECRET, {
             expiresIn: 86400, // token expires after 24 hours
         });
@@ -152,17 +153,21 @@ app.post("/accountData", async (req, res) => {
     const { token } = req.body;
 
     try {
+        // decode the token created when a user logged in
         const user = jwt.verify(token, JWT_SECRET, (err, res) => {
+            // set user to "token expired" if the token has expired
             if (err) {
                 return "token expired";
             }
             return res;
         });
 
+        // if the user has expired, send an error
         if (user === "token expired") {
             return res.send({ status: "error", data: "token expired" });
         }
 
+        // look for user data when provided with a username
         const username = user.username;
         Account.findOne({ username: username })
             .then((data) => {
