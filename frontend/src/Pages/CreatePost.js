@@ -1,82 +1,51 @@
 //creating a post will need to route to main page
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
-// export default function CreateAccount() {
-//     const [email, setEmail] = useState("");
-//     const [phoneNumber, setPhoneNumber] = useState("");
-//     const [password, setPass] = useState("");
-//     const [name, setName] = useState("");
 
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         console.log("Created an account");
-//     };
 
-//     return (
-//         <div>
-//             <h2>Create an Account</h2>
-//             <form>
-//                 <label htmlFor="name">Full Name </label>
-//                 <input
-//                     value={name}
-//                     name="name"
-//                     onChange={(e) => setName(e.target.value)}
-//                     id="name"
-//                     placeholder="full Name"
-//                 />
-//                 <br />
-//                 <label htmlFor="Email ">Email </label>
-//                 <input
-//                     value={email}
-//                     onChange={(e) => setEmail(e.target.value)}
-//                     type="email"
-//                     placeholder="youremail@g.ucla.edu"
-//                     id="email"
-//                     name="email"
-//                 />
-//                 <br />
-//                 <label htmlFor="phoneNumber">Phone Number </label>
-//                 <input
-//                     value={phoneNumber}
-//                     onChange={(e) => setPhoneNumber(e.target.value)}
-//                     id="phoneNumber"
-//                     name="phoneNumber"
-//                 />
-//                 <br />
-//                 <label htmlFor="password">Password </label>
-//                 <input
-//                     value={password}
-//                     onChange={(e) => setPass(e.target.value)}
-//                     type="password"
-//                     placeholder="********"
-//                     id="password"
-//                     name="password"
-//                 />
-//                 <br />
-//                 <button onClick={handleSubmit}>
-//                     <Link to="/">Create Account</Link>
-//                 </button>
-//             </form>
-//             <button>
-//                 <Link to="/">Already have an account? Login here.</Link>
-//             </button>
-//         </div>
-//     );
+
+// function createPost1() {
+
+
+
+//     const URL = "http://localhost:8080"
+
+//     //
+//     const getListing = () => {
+//         axios.get(URL + "/listings") //returns a promise
+//             .then(response => {
+//                 console.log(response.data); //lets us access data from response
+    
+//             })
+//             .catch(console.error)
+//     }
 // }
 
+// getListing();
 
 
 export default function CreatePost(){
     // const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [location, setLocation] = useState("");
+    const [meetTime, setMeetTime] = useState("")
+    const [meetDate, setMeetDate] = useState("")
     // const [password, setPass] = useState("");
     
 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Created an Listing");
+
+        //write egverything in here
+        // axios.post('')
+        // get all data here
+        // create new endpoint on API (edit server .js file)
+        //send axios request to API
+        //
+
     };
     
     
@@ -84,9 +53,9 @@ export default function CreatePost(){
     return(
         <div>
             <h2>Create a Listing</h2>
-            <p>This is the create post page. This can be navigated to from PersonalListings.</p>
+            <p>This is the create post page. This can be navigated to from Personal Listings.</p>
             <form>
-                <label htmlFor="price">Price Per Swipe </label>
+                <label htmlFor="price">Price Per Swipe</label>
                     <input
                         value={price}
                         name="price"
@@ -104,6 +73,16 @@ export default function CreatePost(){
                     </select>
                     <br />
                     <br />
+                <label htmlFor="Meet Time">Choose a time </label>
+                    <select name="time" value={meetTime} onChange={(e) => setMeetTime(e.target.value)}>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
+                        <option value="Late Night">Late Night</option>
+                    </select>
+                    <br />
+                    <br />
+                
                 <button onClick={handleSubmit}>
                     <Link to="/search-listings">Publish Post</Link>
                 </button>
