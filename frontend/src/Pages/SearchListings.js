@@ -11,10 +11,10 @@ export default function SearchListings(){
     
     // Set up the search by seller's name functionality
     const [search_by_name, setSearch_by_name] = useState("");
-    const [searchParam] = useState(["poster_name"]);
+    const [searchParam] = useState(["poster_username"]);
 
     // Set up the search by location functionality
-    const [filterParam, setFilterParam] = useState("All");
+    const [filterParam, setFilterParam] = useState(["All"]);
 
     //function to get the listings
     const getListings = () => {
@@ -112,9 +112,9 @@ export default function SearchListings(){
 
 
             </div>
-              {search(listings).map(listing => // Filters the output to match the search critera
+              {search(listings).map(listing => // Filters the output that matches the search critera
                   <div className="axios_lisitng">
-                      <h3>Seller: {listing.poster_name}</h3>
+                      <h3>Seller: {listing.poster_username}</h3>
                       <p>Where to meet: {listing.location}</p>
                       <p>Price: ${listing.price}</p>
                   </div>
