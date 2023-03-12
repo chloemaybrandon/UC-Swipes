@@ -16,6 +16,10 @@ export default function SearchListings(){
     // Set up the search by location functionality
     const [filterParam, setFilterParam] = useState(["All"]);
 
+    const [timefilterParam, setTimefilterParam] = useState(["All"])
+
+    const [PriceSort, setPriceSort] = useState(["Any"])
+
     //function to get the listings
     const getListings = () => {
       // "/listings" retrieves from mongoDB endpoint in a response object
@@ -23,7 +27,7 @@ export default function SearchListings(){
       axios.get(URL + "/listings")
         .then(response => {
           setListings(response.data);
-          //console.log(response.data)
+          // console.log(response.data)
         })
         .catch(console.error)
   
@@ -39,31 +43,71 @@ export default function SearchListings(){
       getListings();
     }, []);
 
+    // Function to sort the listings based off of critera
+    function Sorted(listings){
+      const searched_listings = search(listings)
+      if(PriceSort == "Any"){
+        return searched_listings
+      }else if (PriceSort == "Low to High"){
+        const Sorted_listings = [...searched_listings].sort((a, b) => a.price - b.price);
+        return Sorted_listings 
+      }else if (PriceSort == "High to Low"){
+        const Sorted_listings = [...searched_listings].sort((a, b) => b.price - a.price);
+        return Sorted_listings 
+      }
+
+    }
+
+    // Function that searches through all of the listings and finds matching listings
     function search(listings) {
+
       return listings.filter((listings) => {
-        // If listing's location matches the selected location, return the listings which seller's name matches what was entered in the search bar.
-        if (listings.location === filterParam){
-          return searchParam.some((newItem) => {
-            return (
-              listings[newItem]
-                    .toString()
-                    .toLowerCase()
-                    .indexOf(search_by_name.toLowerCase()) > -1
-            );
-          });
-        } 
-        // If no location options are sleected, return the listings which seller's name matches what was entered in the search bar.
-        // else { 
-        else if (filterParam == "All") { 
-          return searchParam.some((newItem) => {
-            return (
-              listings[newItem]
-                    .toString()
-                    .toLowerCase()
-                    .indexOf(search_by_name.toLowerCase()) > -1
-            );
-          });
-        }
+        if(listings.purchased_bool == false){ // Checks to see if the swipe has been purchased
+          // If listing's location matches the selected location, return the listings which seller's name matches what was entered in the search bar.
+          if (listings.location === filterParam){
+            if (listings.meet_time === timefilterParam){ // Check to make sure that the time selected matches
+              return searchParam.some((newItem) => { // Only output listings that match the search bar
+                return (
+                  listings[newItem]
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(search_by_name.toLowerCase()) > -1
+                );
+              });
+            }else if (timefilterParam == "All"){ // If it matches the location filter but the time filter is any, proceed this way
+              return searchParam.some((newItem) => {
+                return (
+                  listings[newItem]
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(search_by_name.toLowerCase()) > -1
+                );
+              });
+            }
+          } 
+          // If no location options are sleected, check the location search and return the listings which seller's name matches what was entered in the search bar.
+          else if (filterParam == "All") { 
+            if (listings.meet_time === timefilterParam){
+              return searchParam.some((newItem) => {
+                return (
+                  listings[newItem]
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(search_by_name.toLowerCase()) > -1
+                );
+              });
+            }else if (timefilterParam == "All"){
+              return searchParam.some((newItem) => {
+                return (
+                  listings[newItem]
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(search_by_name.toLowerCase()) > -1
+                );
+              });
+            }
+          }
+      }
     });
   }
 
@@ -73,23 +117,28 @@ export default function SearchListings(){
           
           <div className="axios_lisitng_container">
             <div className="search-wrapper">
-              <label htmlFor="search-form">
-                <span className="sr-only">Search by Seller's Name </span>
-                <input
-                    type="search"
-                    name="search-form"
-                    id="search-form"
-                    className="search-input"
-                    placeholder="Search for Sellers"
-                    value={search_by_name}
-                    /*
-                    // set the value of our useState search_by_name
-                    //  anytime the user types in the search box
-                    */
-                    onChange={(search_by_name) => setSearch_by_name(search_by_name.target.value)}
-                />
-              </label>
               <div className='select'>
+                <label htmlFor="search-form">
+                  {/* Implementation for the search bar */}
+                  <span className="sr-only">Search by Seller's Name </span>
+                  <input
+                      type="search"
+                      name="search-form"
+                      id="search-form"
+                      className="search-input"
+                      placeholder="Search for Sellers"
+                      value={search_by_name}
+                      /*
+                      // set the value of our useState search_by_name
+                      //  anytime the user types in the search box
+                      */
+                      onChange={(search_by_name) => setSearch_by_name(search_by_name.target.value)}
+                  />
+                </label>
+              </div>
+
+              <div className='select'>
+                {/* Implementation for the pick up filter */}
                 <span className="sr-only">Filter by Pickup Location </span>
                 <select 
                   onChange={(e) => {
@@ -105,14 +154,45 @@ export default function SearchListings(){
                   <option value="de_neve">De Neve</option>
                   <option value="Epicuria">Epicuria</option>
                 </select>
-                <span className='focus'></span>
+                {/* <span className='focus'></span> */}
               </div>
 
+              <div className='select'>
+                {/* Implementation for the time of pick up filter */}
+                <span className="sr-only">Filter by Pickup Time </span>
+                <select 
+                  onChange={(e) => {
+                    setTimefilterParam(e.target.value);
+                  }}
+                  className="custom-select"
+                  aria-label="Filter Listings By Time of Pickup"
+                >
+                  <option value="All">Filter By Time</option>
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Dinner">Dinner</option>
+                </select>
+                {/* <span className='focus'></span> */}
+              </div>
 
-
-
+              <div className='select'>
+                {/* Implementation to sort by the price (Low to High or High to Low) */}
+                <span className="sr-only">Sort By Price </span>
+                <select 
+                  onChange={(e) => {
+                    setPriceSort(e.target.value);
+                  }}
+                  className="custom-select"
+                  aria-label="Sort Listings By price"
+                >
+                  <option value="Any">Sort By Price</option>
+                  <option value="Low to High">Low to High</option>
+                  <option value="High to Low">High to Low</option>
+                </select>
+                {/* <span className='focus'></span> */}
+              </div>
             </div>
-              {search(listings).map(listing => // Filters the output that matches the search critera
+              {Sorted(listings).map(listing => // Filters the output that matches the search critera then only displays these listings
                   <div className="axios_lisitng">
                       <h3>Seller: {listing.poster_username}</h3>
                       <p>Where to meet: {listing.location}</p>
