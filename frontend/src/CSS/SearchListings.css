@@ -11,3 +11,20 @@
     margin: 50px;
     background-color: #8BB8E8;
 }
+
+.search-wrapper{
+    border-style: solid;
+    border-radius: 10px;
+    margin: 50px;
+    background-color: #DAEBFE;
+}
+
+.select{
+    margin: 15px;
+    background-color: #DAEBFE;
+}
+
+.search-input{
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
