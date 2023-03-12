@@ -18,6 +18,7 @@ export default function SearchListings(){
 
     const [timefilterParam, setTimefilterParam] = useState(["All"])
 
+    const [PriceSort, setPriceSort] = useState(["Any"])
 
     //function to get the listings
     const getListings = () => {
@@ -26,7 +27,7 @@ export default function SearchListings(){
       axios.get(URL + "/listings")
         .then(response => {
           setListings(response.data);
-          //console.log(response.data)
+          // console.log(response.data)
         })
         .catch(console.error)
   
@@ -42,52 +43,71 @@ export default function SearchListings(){
       getListings();
     }, []);
 
+    // Function to sort the listings based off of critera
+    function Sorted(listings){
+      const searched_listings = search(listings)
+      if(PriceSort == "Any"){
+        return searched_listings
+      }else if (PriceSort == "Low to High"){
+        const Sorted_listings = [...searched_listings].sort((a, b) => a.price - b.price);
+        return Sorted_listings 
+      }else if (PriceSort == "High to Low"){
+        const Sorted_listings = [...searched_listings].sort((a, b) => b.price - a.price);
+        return Sorted_listings 
+      }
+
+    }
+
+    // Function that searches through all of the listings and finds matching listings
     function search(listings) {
+
       return listings.filter((listings) => {
-        // If listing's location matches the selected location, return the listings which seller's name matches what was entered in the search bar.
-        if (listings.location === filterParam){
-          if (listings.meet_time === timefilterParam){ // Check to make sure that the time selected matches
-            return searchParam.some((newItem) => { // Only output listings that match the search bar
-              return (
-                listings[newItem]
-                      .toString()
-                      .toLowerCase()
-                      .indexOf(search_by_name.toLowerCase()) > -1
-              );
-            });
-          }else if (timefilterParam == "All"){ // If it matches the location filter but the time filter is any, proceed this way
-            return searchParam.some((newItem) => {
-              return (
-                listings[newItem]
-                      .toString()
-                      .toLowerCase()
-                      .indexOf(search_by_name.toLowerCase()) > -1
-              );
-            });
+        if(listings.purchased_bool == false){ // Checks to see if the swipe has been purchased
+          // If listing's location matches the selected location, return the listings which seller's name matches what was entered in the search bar.
+          if (listings.location === filterParam){
+            if (listings.meet_time === timefilterParam){ // Check to make sure that the time selected matches
+              return searchParam.some((newItem) => { // Only output listings that match the search bar
+                return (
+                  listings[newItem]
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(search_by_name.toLowerCase()) > -1
+                );
+              });
+            }else if (timefilterParam == "All"){ // If it matches the location filter but the time filter is any, proceed this way
+              return searchParam.some((newItem) => {
+                return (
+                  listings[newItem]
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(search_by_name.toLowerCase()) > -1
+                );
+              });
+            }
+          } 
+          // If no location options are sleected, check the location search and return the listings which seller's name matches what was entered in the search bar.
+          else if (filterParam == "All") { 
+            if (listings.meet_time === timefilterParam){
+              return searchParam.some((newItem) => {
+                return (
+                  listings[newItem]
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(search_by_name.toLowerCase()) > -1
+                );
+              });
+            }else if (timefilterParam == "All"){
+              return searchParam.some((newItem) => {
+                return (
+                  listings[newItem]
+                        .toString()
+                        .toLowerCase()
+                        .indexOf(search_by_name.toLowerCase()) > -1
+                );
+              });
+            }
           }
-        } 
-        // If no location options are sleected, check the location search and return the listings which seller's name matches what was entered in the search bar.
-        else if (filterParam == "All") { 
-          if (listings.meet_time === timefilterParam){
-            return searchParam.some((newItem) => {
-              return (
-                listings[newItem]
-                      .toString()
-                      .toLowerCase()
-                      .indexOf(search_by_name.toLowerCase()) > -1
-              );
-            });
-          }else if (timefilterParam == "All"){
-            return searchParam.some((newItem) => {
-              return (
-                listings[newItem]
-                      .toString()
-                      .toLowerCase()
-                      .indexOf(search_by_name.toLowerCase()) > -1
-              );
-            });
-          }
-        }
+      }
     });
   }
 
@@ -116,6 +136,7 @@ export default function SearchListings(){
                   />
                 </label>
               </div>
+
               <div className='select'>
                 {/* Implementation for the pick up filter */}
                 <span className="sr-only">Filter by Pickup Location </span>
@@ -153,12 +174,25 @@ export default function SearchListings(){
                 </select>
                 {/* <span className='focus'></span> */}
               </div>
-              
 
-
-
+              <div className='select'>
+                {/* Implementation to sort by the price (Low to High or High to Low) */}
+                <span className="sr-only">Sort By Price </span>
+                <select 
+                  onChange={(e) => {
+                    setPriceSort(e.target.value);
+                  }}
+                  className="custom-select"
+                  aria-label="Sort Listings By price"
+                >
+                  <option value="Any">Sort By Price</option>
+                  <option value="Low to High">Low to High</option>
+                  <option value="High to Low">High to Low</option>
+                </select>
+                {/* <span className='focus'></span> */}
+              </div>
             </div>
-              {search(listings).map(listing => // Filters the output that matches the search critera then only displays these listings
+              {Sorted(listings).map(listing => // Filters the output that matches the search critera then only displays these listings
                   <div className="axios_lisitng">
                       <h3>Seller: {listing.poster_username}</h3>
                       <p>Where to meet: {listing.location}</p>
