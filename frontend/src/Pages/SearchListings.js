@@ -54,7 +54,7 @@ export default function SearchListings(){
         } 
         // If no location options are sleected, return the listings which seller's name matches what was entered in the search bar.
         // else { 
-        else if (filterParam === "All") { 
+        else if (filterParam == "All") { 
           return searchParam.some((newItem) => {
             return (
               listings[newItem]
