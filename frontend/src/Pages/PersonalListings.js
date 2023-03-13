@@ -1,24 +1,64 @@
 import '../CSS/SearchListings.css';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function SearchListings(){
 
+    // const [id, setId] = useState("");
+    const [username, setUsername] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [phoneNumber, setPhoneNumber] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [name, setName] = useState("");
+
+    const URL = "http://localhost:8080";
+    const navigate = useNavigate();
+
+    //find the username of the logged-in user
+
+    const getCurrentAccount = () => {
+        // get the information of the current account to fill in fields
+        axios
+            .post(URL + "/accountData", {
+                token: window.localStorage.getItem("token"),
+            })
+            .then((res) => {
+                // log out if token expired
+                if (res.data.data === "token expired") {
+                    alert("Token expired. Please log in again");
+                    window.localStorage.clear();
+                    window.location.reload(true);
+                    navigate("/");
+                }
+
+                // setId(res.data.data._id);
+                setUsername(res.data.data.username);
+                // setPassword("********");
+                // setName(res.data.data.name);
+                // setEmail(res.data.data.email);
+                // setPhoneNumber(res.data.data.phoneNumber);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    useEffect(() => {
+        getCurrentAccount();
+    }, []);
+
+
+
+
+    //Only display the posts from the logged-in username found above
+
     let [listings, setListings] = useState([]);
 
-    const URL = "http://localhost:8080"
-    
     // Set up the search by seller's name functionality
-    const [search_by_name, setSearch_by_name] = useState("");
     const [searchParam] = useState(["poster_username"]);
 
     // Set up the search by location functionality
-    const [filterParam, setFilterParam] = useState(["All"]);
-
-    const [timefilterParam, setTimefilterParam] = useState(["All"])
-
-    const [PriceSort, setPriceSort] = useState(["Any"])
 
     //function to get the listings
     const getListings = () => {
@@ -59,7 +99,7 @@ export default function SearchListings(){
                   listings[newItem]
                         .toString()
                         .toLowerCase()
-                        .indexOf("chloe".toLowerCase()) > -1
+                        .indexOf(username.toLowerCase()) > -1
                 );
               });
       }
@@ -68,7 +108,7 @@ export default function SearchListings(){
 
     return(
         <div>
-            <p>This is the PersonalListings page. This can be navigated to from the navbar.</p>
+            <p>Welcome to the "My Listings" page. All of your currently active swipe listings will be shown below. Click "Create Post" to create a new swipe listing.</p>
             <button><Link to='/create-post'>Create Post</Link></button>
 
           <div className="axios_lisitng_container">
