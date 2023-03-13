@@ -1,6 +1,6 @@
 //creating a post will need to route to main page
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 
@@ -27,6 +27,7 @@ import axios from 'axios';
 
 
 export default function CreatePost(){
+    const URL = "http://localhost:8080"
     // const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [location, setLocation] = useState("");
@@ -34,20 +35,62 @@ export default function CreatePost(){
     const [meetDate, setMeetDate] = useState("")
     const [quantity, setQuantity] = useState("")
     // const [password, setPass] = useState("");
-    
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
+        console.log(price)
+        console.log(location)
+        console.log(meetTime)
+        console.log(meetDate)
+        console.log(quantity)
         console.log("Created an Listing");
-        
+        if(location=="") {
+            alert("please enter a location")
+            return
+        }
+        if(meetTime=="") {
+            alert("please enter a meet time")
+            return
+        }
         //write egverything in here
         // axios.post('')
         // get all data here
         // create new endpoint on API (edit server .js file)
         //send axios request to API
         //
-
+        const res = await axios
+        .post(URL + "/accountData", {
+            token: window.localStorage.getItem("token"),
+        })
+        console.log(res);
+        if (res.data.data === "token expired") {
+            alert("Token expired. Please log in again");
+            window.localStorage.clear();
+            window.location.reload(true);
+            navigate("/");
+        } else {
+            const username = res.data.data.username
+            axios.post(URL+'/listings', {
+                poster_name: username,
+                price: price,
+                location: location,
+                meet_time: meetTime,
+                meet_date: meetDate,
+                quantity: quantity
+            }).then((result)=> {
+                navigate("/personal-listings")
+                alert("Listing created!")
+            }).catch((err)=> {
+                console.log(err)
+                alert("Failure to create listing")
+            })
+        }
+        setPrice(null);
+        setLocation(null);
+        setMeetTime(null);
+        setMeetDate(null);
+        setQuantity(null);
     };
     
     
@@ -87,18 +130,19 @@ export default function CreatePost(){
 
                 <label htmlFor="location">Choose a location:   </label>
                     <select name="location" value={location} onChange={(e) => setLocation(e.target.value)}>
-                        <option value="rieber">Epicuria</option>
-                        <option value="hedrick">De Neve</option>
-                        <option value="sproul">Feast</option>
-                        <option value="de_neve">Bruin Plate</option>
-                        <option value="de_neve">Bruin Cafe</option>
-                        <option value="de_neve">Rendezvous</option>
-                        <option value="de_neve">The Study</option>
-                        <option value="de_neve">The Drey</option>
-                        <option value="de_neve">Epic at Ackerman</option>
-                        <option value="de_neve">Rieber Court Food Trucks</option>
-                        <option value="de_neve">Sproul Court Food Trucks</option>
-                        <option value="de_neve">De Neve Plaza Food Trucks</option>
+                        <option value="">--Please choose an option--</option>
+                        <option value="epicuria">Epicuria</option>
+                        <option value="de_neve">De Neve</option>
+                        <option value="feast">Feast</option>
+                        <option value="bplate">Bruin Plate</option>
+                        <option value="bcafe">Bruin Cafe</option>
+                        <option value="render">Rendezvous</option>
+                        <option value="study">The Study</option>
+                        <option value="drey">The Drey</option>
+                        <option value="epic_ackerman">Epic at Ackerman</option>
+                        <option value="rieber_truck">Rieber Court Food Trucks</option>
+                        <option value="sproul_truck">Sproul Court Food Trucks</option>
+                        <option value="de_neve_truck">De Neve Plaza Food Trucks</option>
                     </select>
 
                     <br />
@@ -107,14 +151,12 @@ export default function CreatePost(){
 
 
                 <label htmlFor="Meet Time">Choose a Time:   </label>
-                    <input
-                        type="time"
-                        value={meetTime}
-                        name="Meet time"
-                        onChange={(e) => setMeetTime(e.target.value)}
-                        id="Meet Time"
-                        placeholder="Meet Time"
-                    />
+                <select name="meetTime" value={meetTime} onChange={(e) => setMeetTime(e.target.value)}>
+                        <option value="">--Please choose an option--</option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                    </select>
 
                     <br />
                     <br />

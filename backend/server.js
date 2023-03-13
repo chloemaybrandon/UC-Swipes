@@ -151,7 +151,7 @@ app.post("/login", async (req, res) => {
 // get the account information
 app.post("/accountData", async (req, res) => {
     const { token } = req.body;
-
+    
     try {
         // decode the token created when a user logged in
         const user = jwt.verify(token, JWT_SECRET, (err, res) => {
@@ -187,8 +187,9 @@ app.get("/listings", async (req, res) => {
 });
 
 app.post("/listings", async (req, res) => {
+    console.log(req.body);
     const listing = new Listing({
-        poster_name: req.body.poster_name,
+        poster_username: req.body.poster_name,
         price: req.body.price,
         quantity: req.body.quantity,
         location: req.body.location,
@@ -197,9 +198,10 @@ app.post("/listings", async (req, res) => {
         post_date: Date.now(),
         purchased_bool: false
     });
-
     listing.save();
-    res.json(listing);
+    res.json({
+        "success": true
+    });
 });
 
 
