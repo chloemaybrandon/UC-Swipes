@@ -10,12 +10,34 @@ const ListingSchema = new Schema({
         type: Number,
         required: true
     },
+
+    quantity: {
+        type: Number,
+        required: true
+    },
+
     location: {
         type: String,
         required: true
     },
-    date: {
+
+    meet_time: {
+        type: String,
+        required: true
+    },
+
+    meet_date: {
         type: Date,
+        required: true
+    },
+
+    post_date: {
+        type: Date,
+        required: true
+    },
+
+    purchased_bool: {
+        type: Boolean,
         required: true
     }
 });

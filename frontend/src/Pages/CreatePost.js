@@ -38,6 +38,7 @@ export default function CreatePost(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         console.log("Created an Listing");
         
         //write egverything in here

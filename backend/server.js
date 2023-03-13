@@ -190,13 +190,20 @@ app.post("/listings", async (req, res) => {
     const listing = new Listing({
         poster_name: req.body.poster_name,
         price: req.body.price,
+        quantity: req.body.quantity,
         location: req.body.location,
-        date: Date.now(),
+        meet_time: req.body.meet_time,
+        meet_date: req.body.meet_date,
+        post_date: Date.now(),
+        purchased_bool: false
     });
 
     listing.save();
     res.json(listing);
 });
+
+
+
 
 app.get("/random", (request, response) => {
     // generate random number from 1-100
@@ -205,6 +212,11 @@ app.get("/random", (request, response) => {
         console.log("Server has started!");
     });
 });
+
+
+
+
+
 
 // const newAccount = new Account({
 //     username: "Chloe",

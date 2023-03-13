@@ -26,6 +26,7 @@ export default function SearchListings(){
       //returns a promise, resolve with .then or .asyncawait
       axios.get(URL + "/listings")
         .then(response => {
+          // console.log(response.data);
           setListings(response.data);
           // console.log(response.data)
         })
@@ -97,13 +98,19 @@ export default function SearchListings(){
                 );
               });
             }else if (timefilterParam == "All"){
+
+              
               return searchParam.some((newItem) => {
+                if (listings[newItem] != undefined){
                 return (
                   listings[newItem]
                         .toString()
                         .toLowerCase()
                         .indexOf(search_by_name.toLowerCase()) > -1
                 );
+                } else {
+                  return null;
+                }
               });
             }
           }
@@ -148,11 +155,18 @@ export default function SearchListings(){
                   aria-label="Filter Listings By Location"
                 >
                   <option value="All">Filter By Location</option>
-                  <option value="rieber">Rieber</option>
-                  <option value="hedrick">Hedrick</option>
-                  <option value="sproul">Sproul</option>
-                  <option value="de_neve">De Neve</option>
-                  <option value="Epicuria">Epicuria</option>
+                  <option value="rieber">Epicuria</option>
+                  <option value="hedrick">De Neve</option>
+                  <option value="sproul">Feast</option>
+                  <option value="de_neve">Bruin Plate</option>
+                  <option value="de_neve">Bruin Cafe</option>
+                  <option value="de_neve">Rendezvous</option>
+                  <option value="de_neve">The Study</option>
+                  <option value="de_neve">The Drey</option>
+                  <option value="de_neve">Epic at Ackerman</option>
+                  <option value="de_neve">Rieber Court Food Trucks</option>
+                  <option value="de_neve">Sproul Court Food Trucks</option>
+                  <option value="de_neve">De Neve Plaza Food Trucks</option>
                 </select>
                 {/* <span className='focus'></span> */}
               </div>
