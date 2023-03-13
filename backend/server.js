@@ -215,7 +215,18 @@ app.get("/random", (request, response) => {
     });
 });
 
-
+app.post('/buyListing', async (req, res)=> {
+    const id = req.body.id;
+    const current_username = req.body.current_username;
+    console.log(id);
+    console.log(current_username)
+    const listing = await Listing.findById(id);
+    console.log(listing)
+    listing.purchased_bool = true
+    listing.purchaser_name = current_username
+    listing.save()
+    res.json("Success")
+})
 
 
 

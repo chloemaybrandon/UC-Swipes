@@ -43,7 +43,25 @@ export default function SearchListings(){
     useEffect(() => {
       getListings();
     }, []);
-
+    const buyListing = async (id) => {
+      const res = await axios
+        .post(URL + "/accountData", {
+            token: window.localStorage.getItem("token"),
+        })
+        console.log(res);
+        if (res.data.data === "token expired") {
+            alert("Token expired. Please log in again");
+            window.localStorage.clear();
+            window.location.reload(true);
+            navigate("/");
+        } else {
+            const username = res.data.data.username
+            axios.post(URL+'/buyListing', {
+              current_username:username,
+              id: id
+            })
+        }
+    }
     // Function to sort the listings based off of critera
     function Sorted(listings){
       const searched_listings = search(listings)
@@ -63,7 +81,9 @@ export default function SearchListings(){
     function search(listings) {
 
       return listings.filter((listing) => {
-        console.log(listing)
+        if(listing.purchased_bool) {
+          return false
+        }
         if(listing.purchased_bool == false){ // Checks to see if the swipe has been purchased
           // If listing's location matches the selected location, return the listings which seller's name matches what was entered in the search bar.
           if (listing.location === filterParam){
@@ -213,6 +233,7 @@ export default function SearchListings(){
                       <h3>Seller: {listing.poster_username}</h3>
                       <p>Where to meet: {listing.location}</p>
                       <p>Price: ${listing.price}</p>
+                      <button onClick={()=>buyListing(listing._id)}>Buy Listing</button>
                   </div>
               )
             }
