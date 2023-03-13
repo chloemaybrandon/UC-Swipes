@@ -60,6 +60,7 @@ export default function SearchListings(){
               current_username:username,
               id: id
             })
+            window.location.reload(true);
         }
     }
     // Function to sort the listings based off of critera
