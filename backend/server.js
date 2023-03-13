@@ -151,7 +151,7 @@ app.post("/login", async (req, res) => {
 // get the account information
 app.post("/accountData", async (req, res) => {
     const { token } = req.body;
-
+    
     try {
         // decode the token created when a user logged in
         const user = jwt.verify(token, JWT_SECRET, (err, res) => {
@@ -187,16 +187,25 @@ app.get("/listings", async (req, res) => {
 });
 
 app.post("/listings", async (req, res) => {
+    console.log(req.body);
     const listing = new Listing({
-        poster_name: req.body.poster_name,
+        poster_username: req.body.poster_name,
         price: req.body.price,
+        quantity: req.body.quantity,
         location: req.body.location,
-        date: Date.now(),
+        meet_time: req.body.meet_time,
+        meet_date: req.body.meet_date,
+        post_date: Date.now(),
+        purchased_bool: false
     });
-
     listing.save();
-    res.json(listing);
+    res.json({
+        "success": true
+    });
 });
+
+
+
 
 app.get("/random", (request, response) => {
     // generate random number from 1-100
@@ -205,6 +214,22 @@ app.get("/random", (request, response) => {
         console.log("Server has started!");
     });
 });
+
+app.post('/buyListing', async (req, res)=> {
+    const id = req.body.id;
+    const current_username = req.body.current_username;
+    console.log(id);
+    console.log(current_username)
+    const listing = await Listing.findById(id);
+    console.log(listing)
+    listing.purchased_bool = true
+    listing.purchaser_name = current_username
+    listing.save()
+    res.json("Success")
+})
+
+
+
 
 // const newAccount = new Account({
 //     username: "Chloe",

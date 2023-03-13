@@ -8,9 +8,28 @@ Host: localhost:8080
 Content-Type: application/json
 
 {
-    "poster_name": "Kenan",
-    "price": 0.50,
-    "location": "Rende West"
+    "poster_name": "test",
+    "price": 983,
+    "quantity": 231,
+    "location": "Bruin Cafe",
+    "meet_time": "2:00 PM",
+    "meet_date": "12/21/2022",
+    "post_date": "09/19/2023"
 }
 
 ###
+
+POST /listings HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "poster_name": "jake",
+    "price": 2,
+    "quantity": 9,
+    "location": "Bruin Plate",
+    "meet_time": "5:00 PM",
+    "meet_date": "09/12/2023",
+    "post_date": "02/01/2022",
+    // "purchased_bool": false
+}

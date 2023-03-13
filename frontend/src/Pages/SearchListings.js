@@ -26,6 +26,7 @@ export default function SearchListings(){
       //returns a promise, resolve with .then or .asyncawait
       axios.get(URL + "/listings")
         .then(response => {
+          // console.log(response.data);
           setListings(response.data);
           // console.log(response.data)
         })
@@ -42,7 +43,25 @@ export default function SearchListings(){
     useEffect(() => {
       getListings();
     }, []);
-
+    const buyListing = async (id) => {
+      const res = await axios
+        .post(URL + "/accountData", {
+            token: window.localStorage.getItem("token"),
+        })
+        console.log(res);
+        if (res.data.data === "token expired") {
+            alert("Token expired. Please log in again");
+            window.localStorage.clear();
+            window.location.reload(true);
+            navigate("/");
+        } else {
+            const username = res.data.data.username
+            axios.post(URL+'/buyListing', {
+              current_username:username,
+              id: id
+            })
+        }
+    }
     // Function to sort the listings based off of critera
     function Sorted(listings){
       const searched_listings = search(listings)
@@ -61,23 +80,26 @@ export default function SearchListings(){
     // Function that searches through all of the listings and finds matching listings
     function search(listings) {
 
-      return listings.filter((listings) => {
-        if(listings.purchased_bool == false){ // Checks to see if the swipe has been purchased
+      return listings.filter((listing) => {
+        if(listing.purchased_bool) {
+          return false
+        }
+        if(listing.purchased_bool == false){ // Checks to see if the swipe has been purchased
           // If listing's location matches the selected location, return the listings which seller's name matches what was entered in the search bar.
-          if (listings.location === filterParam){
-            if (listings.meet_time === timefilterParam){ // Check to make sure that the time selected matches
+          if (listing.location === filterParam){
+            if (listing.meet_time === timefilterParam){ // Check to make sure that the time selected matches
               return searchParam.some((newItem) => { // Only output listings that match the search bar
                 return (
-                  listings[newItem]
+                  listing[newItem]
                         .toString()
                         .toLowerCase()
                         .indexOf(search_by_name.toLowerCase()) > -1
                 );
               });
-            }else if (timefilterParam == "All"){ // If it matches the location filter but the time filter is any, proceed this way
+            } else if (timefilterParam == "All"){ // If it matches the location filter but the time filter is any, proceed this way
               return searchParam.some((newItem) => {
                 return (
-                  listings[newItem]
+                  listing[newItem]
                         .toString()
                         .toLowerCase()
                         .indexOf(search_by_name.toLowerCase()) > -1
@@ -87,23 +109,28 @@ export default function SearchListings(){
           } 
           // If no location options are sleected, check the location search and return the listings which seller's name matches what was entered in the search bar.
           else if (filterParam == "All") { 
-            if (listings.meet_time === timefilterParam){
+            if (listing.meet_time === timefilterParam){
               return searchParam.some((newItem) => {
+                
                 return (
-                  listings[newItem]
+                  listing[newItem]
                         .toString()
                         .toLowerCase()
                         .indexOf(search_by_name.toLowerCase()) > -1
                 );
               });
-            }else if (timefilterParam == "All"){
+            } else if (timefilterParam == "All"){
               return searchParam.some((newItem) => {
+                // if (listings[newItem] != undefined){
                 return (
-                  listings[newItem]
+                  listing[newItem]
                         .toString()
                         .toLowerCase()
                         .indexOf(search_by_name.toLowerCase()) > -1
                 );
+                // } else {
+                //   return null;
+                // }
               });
             }
           }
@@ -148,11 +175,18 @@ export default function SearchListings(){
                   aria-label="Filter Listings By Location"
                 >
                   <option value="All">Filter By Location</option>
-                  <option value="rieber">Rieber</option>
-                  <option value="hedrick">Hedrick</option>
-                  <option value="sproul">Sproul</option>
-                  <option value="de_neve">De Neve</option>
-                  <option value="Epicuria">Epicuria</option>
+                  <option value="epicuria">Epicuria</option>
+                        <option value="de_neve">De Neve</option>
+                        <option value="feast">Feast</option>
+                        <option value="bplate">Bruin Plate</option>
+                        <option value="bcafe">Bruin Cafe</option>
+                        <option value="render">Rendezvous</option>
+                        <option value="study">The Study</option>
+                        <option value="drey">The Drey</option>
+                        <option value="epic_ackerman">Epic at Ackerman</option>
+                        <option value="rieber_truck">Rieber Court Food Trucks</option>
+                        <option value="sproul_truck">Sproul Court Food Trucks</option>
+                        <option value="de_neve_truck">De Neve Plaza Food Trucks</option>
                 </select>
                 {/* <span className='focus'></span> */}
               </div>
@@ -192,13 +226,17 @@ export default function SearchListings(){
                 {/* <span className='focus'></span> */}
               </div>
             </div>
-              {Sorted(listings).map(listing => // Filters the output that matches the search critera then only displays these listings
+            {/* If listings is null, don't load sorted. If listings is filled, then can load sorted */}
+            {listings.length == 0 ? <div></div> : 
+              Sorted(listings).map(listing => // Filters the output that matches the search critera then only displays these listings
                   <div className="axios_lisitng">
                       <h3>Seller: {listing.poster_username}</h3>
                       <p>Where to meet: {listing.location}</p>
                       <p>Price: ${listing.price}</p>
+                      <button onClick={()=>buyListing(listing._id)}>Buy Listing</button>
                   </div>
-              )}
+              )
+            }
             </div>
             {/* <Listing />
             <Listing />
