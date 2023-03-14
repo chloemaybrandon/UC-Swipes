@@ -203,9 +203,9 @@ export default function SearchListings(){
                   aria-label="Filter Listings By Time of Pickup"
                 >
                   <option value="All">Filter By Time</option>
-                  <option value="Breakfast">Breakfast</option>
-                  <option value="Lunch">Lunch</option>
-                  <option value="Dinner">Dinner</option>
+                  <option value="breakfast">Breakfast</option>
+                  <option value="lunch">Lunch</option>
+                  <option value="dinner">Dinner</option>
                 </select>
                 {/* <span className='focus'></span> */}
               </div>
