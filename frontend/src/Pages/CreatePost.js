@@ -120,6 +120,7 @@ export default function CreatePost(){
             }).then((result)=> {
                 navigate("/personal-listings")
                 alert("Listing created!")
+                window.location.reload();
             }).catch((err)=> {
                 console.log(err)
                 alert("Failure to create listing")
