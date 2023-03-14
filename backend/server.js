@@ -190,6 +190,8 @@ app.post("/listings", async (req, res) => {
     console.log(req.body);
     const listing = new Listing({
         poster_username: req.body.poster_name,
+        poster_email: req.body.email,
+        poster_phone: req.body.phone,
         price: req.body.price,
         quantity: req.body.quantity,
         location: req.body.location,
@@ -224,10 +226,11 @@ app.post('/buyListing', async (req, res)=> {
     console.log(listing)
     listing.purchased_bool = true
     listing.purchaser_name = current_username
+    listing.purchaser_phone = req.body.phone
+    listing.purchaser_email = req.body.email
     listing.save()
     res.json("Success")
 })
-
 
 
 
