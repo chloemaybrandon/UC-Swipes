@@ -264,7 +264,7 @@ export default function SearchListings(){
                       <p>Meet Time: {listing.meet_time}</p>
                       <p>Price: ${listing.price}</p>
                       <p>Quantity: {listing.quantity}</p>
-                      <button onClick={()=>buyListing(listing._id)}>Buy Listing</button>
+                      <button className="buy-listing-button" onClick={()=>buyListing(listing._id)}>Buy Listing</button>
                       <br></br>
                   </div>
               )
