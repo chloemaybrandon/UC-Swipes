@@ -45,14 +45,49 @@ export default function CreatePost(){
         console.log(meetDate)
         console.log(quantity)
         console.log("Created an Listing");
+        // Check to make sure that values were given in the fields.
+        if(price=="") {
+            alert("Please enter a price.")
+            navigate("/create-post");
+            return
+        }
         if(location=="") {
-            alert("please enter a location")
+            alert("Please enter a location to meet.")
+            navigate("/create-post");
             return
         }
         if(meetTime=="") {
-            alert("please enter a meet time")
+            alert("Please enter a time to meet.")
+            navigate("/create-post");
             return
         }
+        if(meetDate=="") {
+            alert("Please enter a date to meet.")
+            navigate("/create-post");
+            return
+        }
+        if(quantity=="") {
+            alert("Please enter a quantity.")
+            navigate("/create-post");
+            return
+        }
+
+        // Check to make sure that price and quantity are both numbers and positive
+        if (isNaN(price) === true || Math.sign(price) !== 1) {
+            alert("Please enter a valid price (a positive real number).")
+            navigate("/create-post");
+            return
+        }
+        if (isNaN(quantity) === true || Math.sign(quantity) !== 1 || Number.isInteger(Number(quantity)) === false) {
+            alert("Please enter a valid quantity (a positive whole real number).")
+            navigate("/create-post");
+            return
+        }
+
+
+
+
+
         //write egverything in here
         // axios.post('')
         // get all data here
@@ -179,7 +214,7 @@ export default function CreatePost(){
                     <br />
                 
                 <button onClick={handleSubmit}>
-                    <Link to="/search-listings">Publish Post</Link>
+                    <Link to="/personal-listings">Publish Post</Link>
                 </button>
             </form>
         </div>
