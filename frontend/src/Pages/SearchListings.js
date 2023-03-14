@@ -21,6 +21,21 @@ export default function SearchListings(){
 
     const [PriceSort, setPriceSort] = useState(["Any"])
 
+    const locationMap = {
+      "epicuria": "Epicuria",
+      "de_neve": "De Neve",
+      "feast": "Feast",
+      "bplate": "Bruin Plate",
+      "bcafe": "Bruin Cafe",
+      "render": "Rendezvous",
+      "study": "The Study",
+      "drey": "The Drey",
+      "epic_ackerman": "Epic at Ackerman",
+      "rieber_truck": "Rieber Court Food Trucks",
+      "sproul_truck": "Sproul Court Food Trucks",
+      "de_neve_truck": "De Neve Plaza Food Trucks",
+    };
+
     //function to get the listings
     const getListings = () => {
       // "/listings" retrieves from mongoDB endpoint in a response object
@@ -49,6 +64,9 @@ export default function SearchListings(){
       getListings();
     }, []);
     const buyListing = async (id) => {
+      if(!confirm("Are you sure you would like to purchase this listing?")) {
+        return
+      }
       const res = await axios
         .post(URL + "/accountData", {
             token: window.localStorage.getItem("token"),
@@ -240,9 +258,14 @@ export default function SearchListings(){
               Sorted(listings).map(listing => // Filters the output that matches the search critera then only displays these listings
                   <div className="axios_lisitng">
                       <h3>Seller: {listing.poster_username}</h3>
-                      <p>Where to meet: {listing.location}</p>
+                      <p>List Date: {listing.post_date.slice(5,10)}-{listing.post_date.slice(0,4)}</p>
+                      <p>Meet Location: {locationMap[listing.location]}</p>
+                      <p>Meet Date: {listing.meet_date.slice(5,)}-{listing.meet_date.slice(0,4)}</p>
+                      <p>Meet Time: {listing.meet_time}</p>
                       <p>Price: ${listing.price}</p>
+                      <p>Quantity: {listing.quantity}</p>
                       <button onClick={()=>buyListing(listing._id)}>Buy Listing</button>
+                      <br></br>
                   </div>
               )
             }

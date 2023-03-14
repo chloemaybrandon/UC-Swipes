@@ -157,9 +157,9 @@ export default function CreatePost(){
                 <label htmlFor="Meet Time">Choose a Time:   </label>
                 <select name="meetTime" value={meetTime} onChange={(e) => setMeetTime(e.target.value)}>
                         <option value="">--Please choose an option--</option>
-                        <option value="breakfast">Breakfast</option>
-                        <option value="lunch">Lunch</option>
-                        <option value="dinner">Dinner</option>
+                        <option value="Breakfast">Breakfast</option>
+                        <option value="Lunch">Lunch</option>
+                        <option value="Dinner">Dinner</option>
                     </select>
 
                     <br />
