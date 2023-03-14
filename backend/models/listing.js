@@ -6,6 +6,14 @@ const ListingSchema = new Schema({
         type: String,
         required: true
     },
+    poster_email: {
+        type: String,
+        required: true
+    },
+    poster_phone: {
+        type: String,
+        required: true
+    },
     price: {
         type: Number,
         required: true
@@ -29,6 +37,14 @@ const ListingSchema = new Schema({
     },
     purchaser_name: {
         type: String,
+        required: false
+    },
+    purchaser_email:{
+        type:String,
+        required:false
+    },
+    purchaser_phone: {
+        type:String,
         required: false
     },
     purchased_bool: {
