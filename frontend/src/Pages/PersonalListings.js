@@ -13,6 +13,22 @@ export default function SearchListings(){
     // const [password, setPassword] = useState("");
     // const [name, setName] = useState("");
 
+    const locationMap = {
+      "epicuria": "Epicuria",
+      "de_neve": "De Neve",
+      "feast": "Feast",
+      "bplate": "Bruin Plate",
+      "bcafe": "Bruin Cafe",
+      "render": "Rendezvous",
+      "study": "The Study",
+      "drey": "The Drey",
+      "epic_ackerman": "Epic at Ackerman",
+      "rieber_truck": "Rieber Court Food Trucks",
+      "sproul_truck": "Sproul Court Food Trucks",
+      "de_neve_truck": "De Neve Plaza Food Trucks",
+    };
+
+
     const URL = "http://localhost:8080";
     const navigate = useNavigate();
 
@@ -92,6 +108,7 @@ export default function SearchListings(){
     // Function that searches through all of the listings and finds listings from logged-in user
     function search(listings) {
 
+     
       return listings.filter((listings) => {
         if(true){ // Checks to see if the swipe has been purchased
             return searchParam.some((newItem) => { // Only output listings that match the search bar
@@ -120,14 +137,24 @@ export default function SearchListings(){
             <button><Link to='/create-post'>Create Post</Link></button>
 
           <div className="axios_lisitng_container">
+            <h2>Listed Swipes</h2>
               {Sorted(listings).map(listing => // Filters the output that matches the logged-in user then only displays these listings
                   <div className="axios_lisitng" style={listing.purchased_bool ? {"backgroundColor": "lime"} :{}}>
-                      <h3>Seller: {listing.poster_username}</h3>
-                      <p>Where to meet: {listing.location}</p>
-                      <p>Price: ${listing.price}</p>
+
                       {listing.purchased_bool ?<div>
-                        <h3>Purchased by: {listing.purchaser_name} <br></br>{listing.purchaser_email} <br></br>{listing.purchaser_phone}</h3>
+                        <h3>Sold To: {listing.purchaser_name}</h3>
+                        <h4>Purchaser Email: {listing.purchaser_email} </h4>
+                        <h4>Purchaser Phone Number: {listing.purchaser_phone}</h4>
                       </div> :<div></div> }
+                      
+                      <p>List Date: {listing.post_date.slice(5,10)}-{listing.post_date.slice(0,4)}</p>
+                      <p>Meet Location: {locationMap[listing.location]}</p>
+                      {/* {console.log(typeof listing.meet_date)} */}
+                      <p>Meet Date: {listing.meet_date.slice(5,)}-{listing.meet_date.slice(0,4)}</p>
+                      <p>Meet Time: {listing.meet_time}</p>
+                      <p>Price: ${listing.price}</p>
+                      <p>Quantity: {listing.quantity}</p>
+                      
                   </div>
               )}
             </div>
@@ -137,9 +164,15 @@ export default function SearchListings(){
               {purchasedSwipes.map(listing => (
               <div className="axios_lisitng">
                 <h3>Seller: {listing.poster_username}</h3>
-                <p>Contact Info: {listing.poster_email}, {listing.poster_phone} </p>
-                <p>Where to meet: {listing.location}</p>
+                <p>Seller Email: {listing.poster_email} </p>
+                <p>Seller Phone Number: {listing.poster_phone} </p>
+                {/* {console.log(locationMap.listing.location)} */}
+                <p>Meet Location: {locationMap[listing.location]}</p>
+                {/* {console.log(typeof listing.meet_date)} */}
+                <p>Meet Date: {listing.meet_date.slice(5,)}-{listing.meet_date.slice(0,4)}</p>
+                <p>Meet Time: {listing.meet_time}</p>
                 <p>Price: ${listing.price}</p>
+                <p>Quantity: {listing.quantity}</p>
               </div>))}
               </div>}
           </div>

@@ -31,6 +31,10 @@ const ListingSchema = new Schema({
         type: String,
         required: true
     },
+    meet_date: {
+        type: String,
+        required: true
+    },
     post_date: {
         type: Date,
         required: true
