@@ -79,10 +79,10 @@ export default function EditProfile() {
                 />
                 <br />
                 <label htmlFor="username">Username </label>
+                {/* Doesn't allow username to be changed but still displays it to the user. */}
                 <input
                     value={username}
                     name="username"
-                    onChange={(e) => setUsername(e.target.value)}
                     id="username"
                 />
                 <br />

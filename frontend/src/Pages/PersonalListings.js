@@ -7,6 +7,7 @@ export default function SearchListings(){
 
     // const [id, setId] = useState("");
     const [username, setUsername] = useState("");
+    const [purchasedSwipes, setPurchasedSwipes] = useState(null);
     // const [email, setEmail] = useState("");
     // const [phoneNumber, setPhoneNumber] = useState("");
     // const [password, setPassword] = useState("");
@@ -48,8 +49,7 @@ export default function SearchListings(){
         getCurrentAccount();
     }, []);
 
-
-
+    
 
     //Only display the posts from the logged-in username found above
 
@@ -74,7 +74,7 @@ export default function SearchListings(){
       //use axios.post to do a post request
       //use axios.put to do a put request
     }
-  
+
     //note: mapping creates a copy of array
     //array.map(function) -> applies funciton to elements of array, get copy of array w/ that funciton applied
     //for react, funciton should return JSX to be useful
@@ -105,7 +105,15 @@ export default function SearchListings(){
       }
     });
   }
-
+  useEffect(()=> {
+    getPurchases();
+  }, [username, listings])
+  const getPurchases = () => {
+    const purchased = listings.filter((listing) => {
+      return listing.purchaser_name == username
+    }) 
+    setPurchasedSwipes(purchased)
+  }
     return(
         <div>
             <p>Welcome to the "My Listings" page. All of your currently active swipe listings will be shown below. Click "Create Post" to create a new swipe listing.</p>
@@ -120,6 +128,17 @@ export default function SearchListings(){
                   </div>
               )}
             </div>
+          <div className="axios_lisitng_container">
+            <h2>Purchased Swipes</h2>
+            {purchasedSwipes == null ? <div></div> : <div>
+              {purchasedSwipes.map(listing => (
+              <div className="axios_lisitng">
+                <h3>Seller: {listing.poster_username}</h3>
+                <p>Where to meet: {listing.location}</p>
+                <p>Price: ${listing.price}</p>
+              </div>))}
+              </div>}
+          </div>
         </div>
     )
 }
