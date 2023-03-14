@@ -71,8 +71,12 @@ export default function CreatePost(){
             navigate("/");
         } else {
             const username = res.data.data.username
+            const email = res.data.data.email
+            const phone = res.data.data.phoneNumber
             axios.post(URL+'/listings', {
                 poster_name: username,
+                email: email,
+                phone: phone,
                 price: price,
                 location: location,
                 meet_time: meetTime,
