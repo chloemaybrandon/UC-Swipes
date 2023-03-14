@@ -12,6 +12,7 @@ export default function SearchListings(){
     // Set up the search by seller's name functionality
     const [search_by_name, setSearch_by_name] = useState("");
     const [searchParam] = useState(["poster_username"]);
+    const [username, setUsername] = useState(null)
 
     // Set up the search by location functionality
     const [filterParam, setFilterParam] = useState(["All"]);
@@ -31,9 +32,13 @@ export default function SearchListings(){
           // console.log(response.data)
         })
         .catch(console.error)
-  
+        axios.post(URL + "/accountData", {
+            token: window.localStorage.getItem("token")}).then((res)=> {
+              setUsername(res.data.data.username)
+            })
       //use axios.post to do a post request
       //use axios.put to do a put request
+      
     }
   
     //note: mapping creates a copy of array
@@ -56,8 +61,12 @@ export default function SearchListings(){
             navigate("/");
         } else {
             const username = res.data.data.username
+            const phone = res.data.data.phoneNumber
+            const email = res.data.data.email
             axios.post(URL+'/buyListing', {
               current_username:username,
+              phone: phone,
+              email: email,
               id: id
             })
             window.location.reload(true);
@@ -80,9 +89,8 @@ export default function SearchListings(){
 
     // Function that searches through all of the listings and finds matching listings
     function search(listings) {
-
       return listings.filter((listing) => {
-        if(listing.purchased_bool) {
+        if(listing.purchased_bool || listing.poster_username == username) {
           return false
         }
         if(listing.purchased_bool == false){ // Checks to see if the swipe has been purchased
@@ -228,7 +236,7 @@ export default function SearchListings(){
               </div>
             </div>
             {/* If listings is null, don't load sorted. If listings is filled, then can load sorted */}
-            {listings.length == 0 ? <div></div> : 
+            {listings.length == 0 || username == null ? <div></div> : 
               Sorted(listings).map(listing => // Filters the output that matches the search critera then only displays these listings
                   <div className="axios_lisitng">
                       <h3>Seller: {listing.poster_username}</h3>

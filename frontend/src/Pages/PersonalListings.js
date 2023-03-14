@@ -93,7 +93,7 @@ export default function SearchListings(){
     function search(listings) {
 
       return listings.filter((listings) => {
-        if(listings.purchased_bool == false){ // Checks to see if the swipe has been purchased
+        if(true){ // Checks to see if the swipe has been purchased
             return searchParam.some((newItem) => { // Only output listings that match the search bar
                 return (
                   listings[newItem]
@@ -121,10 +121,13 @@ export default function SearchListings(){
 
           <div className="axios_lisitng_container">
               {Sorted(listings).map(listing => // Filters the output that matches the logged-in user then only displays these listings
-                  <div className="axios_lisitng">
+                  <div className="axios_lisitng" style={listing.purchased_bool ? {"backgroundColor": "lime"} :{}}>
                       <h3>Seller: {listing.poster_username}</h3>
                       <p>Where to meet: {listing.location}</p>
                       <p>Price: ${listing.price}</p>
+                      {listing.purchased_bool ?<div>
+                        <h3>Purchased by: {listing.purchaser_name} <br></br>{listing.purchaser_email} <br></br>{listing.purchaser_phone}</h3>
+                      </div> :<div></div> }
                   </div>
               )}
             </div>
@@ -134,6 +137,7 @@ export default function SearchListings(){
               {purchasedSwipes.map(listing => (
               <div className="axios_lisitng">
                 <h3>Seller: {listing.poster_username}</h3>
+                <p>Contact Info: {listing.poster_email}, {listing.poster_phone} </p>
                 <p>Where to meet: {listing.location}</p>
                 <p>Price: ${listing.price}</p>
               </div>))}
