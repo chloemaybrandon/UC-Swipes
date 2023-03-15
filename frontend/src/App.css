@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Source+Sans+Pro&display=swap');
 
 h1 {
   font-family: 'Fredoka One', cursive;
@@ -11,10 +11,33 @@ h1 {
 body{
   background-color: #DAEBFE;
   color: #003B5C;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .App {
   text-align: center;
+}
+
+a{
+  color: #003B5C;
+}
+
+button {
+  background-color: #FFDD99; /* Green */
+  border: solid;
+  border-color: #ffc34f;
+  color: #003B5C;
+  padding: 3px;
+  margin: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px
+}
+
+button:hover{
+  background: lightgoldenrodyellow;
 }
 
 @keyframes App-logo-spin {

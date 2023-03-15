@@ -167,8 +167,10 @@ export default function SearchListings(){
 
     return(
         <div>
-          <p>This is the SearchListings page. This can be navigated to from the navbar and is the first thing that should appear after logging in.</p>
-          
+          <div className="axios_lisitng_container">
+          <h3>Welcome to UC Swipes! Below are the current swipe listings available for you to purchase from other UC Swipes users. Press "Buy Listing" to purchase one, and it will be added to your "My Listings & Purchases" page with the contact information of the seller. They will also recieve your contact information so you can coordinate swipe pickups in more detail.</h3>
+          </div>
+
           <div className="axios_lisitng_container">
             <div className="search-wrapper">
               <div className='select'>
@@ -254,6 +256,7 @@ export default function SearchListings(){
               </div>
             </div>
             {/* If listings is null, don't load sorted. If listings is filled, then can load sorted */}
+            <div className="axios_flex_container">
             {listings.length == 0 || username == null ? <div></div> : 
               Sorted(listings).map(listing => // Filters the output that matches the search critera then only displays these listings
                   <div className="axios_lisitng">
@@ -269,6 +272,7 @@ export default function SearchListings(){
                   </div>
               )
             }
+            </div>
             </div>
             {/* <Listing />
             <Listing />

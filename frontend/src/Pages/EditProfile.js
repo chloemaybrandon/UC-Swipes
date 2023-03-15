@@ -69,6 +69,9 @@ export default function EditProfile() {
     return (
         <div>
             <h2>Manage Your Profile</h2>
+            <div className="axios_lisitng_container">
+            <h3>After editing your personal information, click "Save Changes" to update your profile</h3>
+            </div>
             <form>
                 <label htmlFor="name">Name </label>
                 <input
@@ -112,7 +115,7 @@ export default function EditProfile() {
                     name="password"
                 />
                 <br />
-                <button onClick={handleSubmit}>Submit</button>
+                <button onClick={handleSubmit}>Save Changes</button>
             </form>
         </div>
     );
