@@ -133,13 +133,16 @@ export default function SearchListings(){
   }
     return(
         <div>
-            <p>Welcome to the "My Listings" page. All of your currently active swipe listings will be shown below. Click "Create Post" to create a new swipe listing.</p>
+            <div className="axios_lisitng_container">
+            <h3>Welcome to the "My Listings" page. All of your currently active as well as sold swipe listings will be shown below. Scroll down to view listings that you have purchased from other users and see their contact info. Click "Create Post" to create a new swipe listing.</h3>
+            </div>
             <button><Link to='/create-post'>Create Post</Link></button>
 
           <div className="axios_lisitng_container">
             <h2>Listed Swipes</h2>
+            <div className="axios_flex_container">
               {Sorted(listings).map(listing => // Filters the output that matches the logged-in user then only displays these listings
-                  <div className="axios_lisitng" style={listing.purchased_bool ? {"backgroundColor": "lime"} :{}}>
+                  <div className="axios_lisitng" style={listing.purchased_bool ? {"backgroundColor": "palegreen"} :{}}>
 
                       {listing.purchased_bool ?<div>
                         <h3>Sold To: {listing.purchaser_name}</h3>
@@ -158,22 +161,26 @@ export default function SearchListings(){
                   </div>
               )}
             </div>
-          <div className="axios_lisitng_container">
+            </div>
+
+            <div className="axios_lisitng_container">
             <h2>Purchased Swipes</h2>
             {purchasedSwipes == null ? <div></div> : <div>
+            <div className="axios_flex_container">
               {purchasedSwipes.map(listing => (
               <div className="axios_lisitng">
                 <h3>Seller: {listing.poster_username}</h3>
-                <p>Seller Email: {listing.poster_email} </p>
-                <p>Seller Phone Number: {listing.poster_phone} </p>
+                <h4>Seller Email: {listing.poster_email} </h4>
+                <h4>Seller Phone Number: {listing.poster_phone} </h4>
                 {/* {console.log(locationMap.listing.location)} */}
                 <p>Meet Location: {locationMap[listing.location]}</p>
                 {/* {console.log(typeof listing.meet_date)} */}
                 <p>Meet Date: {listing.meet_date.slice(5,)}-{listing.meet_date.slice(0,4)}</p>
                 <p>Meet Time: {listing.meet_time}</p>
-                <p>Price: ${listing.price}</p>
+                <p>Price per Swipe: ${listing.price}</p>
                 <p>Quantity: {listing.quantity}</p>
               </div>))}
+              </div>
               </div>}
           </div>
         </div>
