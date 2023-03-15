@@ -12,6 +12,6 @@ To get started with using our repository:
 8. Run `npm start` to connect to the backend server. Once you see the messages `Server listening on port 8080` and `Connected to DB` in the terminal, you are good to go.
 10. Head back to the frontend page that was opened on your default browser and enjoy our app!
 
-#What is UC Swipes?
+# What is UC Swipes?
 UC Swipes is a site built with the intention of allowing the UCLA and UC community to buy and sell meal plan vouchers, or "swipes" in an online open market. The UCLA meal plan meal balance expires at the end of every week or quarter depending on the plan, leaving many students with an excess of swipes they couldn't purchase before this deadline. Additionally, many students and members of the UCLA community use up too many swipes and are in need of purchasing extra swipes, or have not purchased a UCLA meal plan for the quarter but would like to eat at a UCLA residential resteraunt. This site will enable community members to buy and sell swipes in an open market with sellers setting thei prices, and buyers selecting who they would like to buy from. Follow the steps above to view and try out this site!
   -Chloe Brandon, Kenan Cackovic, Andrew Pan and Sam Chan
