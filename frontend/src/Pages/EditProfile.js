@@ -15,6 +15,19 @@ export default function EditProfile() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        //check field validity
+        if (username.indexOf(' ') >= 0)
+        {
+            alert("Enter Valid username: (no whitespace)");
+            console.log(err);
+            //window.location.reload();
+        }
+        else if (!(email.endsWith("@g.ucla.edu")) && !(email.endsWith("@ucla.edu")))
+        {
+            alert("Enter Valid school email address: (...@g.ucla.edu)");
+            console.log(err);
+            //window.location.reload();
+        }
         editAccount(username, password, name, email, phoneNumber);
     };
 
