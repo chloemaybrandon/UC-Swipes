@@ -52,7 +52,7 @@ export default function CreateAccount() {
                     name="name"
                     onChange={(e) => setName(e.target.value)}
                     id="name"
-                    placeholder="full Name"
+                    placeholder="Full Name"
                 />
                 <br />
                 <label htmlFor="username">Username </label>
@@ -92,7 +92,7 @@ export default function CreateAccount() {
                     name="password"
                 />
                 <br />
-                <button onClick={handleSubmit}>CreateAccount</button>
+                <button onClick={handleSubmit}>Create Account</button>
             </form>
             <button>
                 <Link to="/">Already have an account? Login here.</Link>
