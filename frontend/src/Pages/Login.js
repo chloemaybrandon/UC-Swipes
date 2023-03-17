@@ -39,6 +39,10 @@ export default function Login() {
 
     return (
         <div>
+            <div className="axios_lisitng_container">
+                <h2>What is UC Swipes?</h2>
+                <h3>UC Swipes is a site built with the intention of allowing the UCLA and UC community to buy and sell meal plan vouchers, or "swipes" in an online open market. The UCLA meal plan meal balance expires at the end of every week or quarter depending on the plan, leaving many students with an excess of swipes they couldn't use before this deadline. Additionally, many students and members of the UCLA community use up too many swipes and are in need of purchasing extra swipes, or have not purchased a UCLA meal plan for the quarter but would like to eat at a UCLA residential restaurant. This site enables community members to buy and sell swipes in an open market with sellers setting prices, and buyers selecting who they would like to purchase from. Login below to get started!</h3>
+            </div>
             <div className="loginContainer">
                 <h2>Log In</h2>
                 <form>
